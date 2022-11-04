@@ -1,0 +1,14 @@
+#Create Backend Image for Newsletter App
+FROM maven:3.8.6-openjdk-8-slim AS build 
+# Set your working directory
+WORKDIR /
+
+COPY src /home/app/src
+COPY pom.xml /home/app
+
+RUN mvn -f /home/app/pom.xml clean package
+FROM openjdk:8
+COPY --from=build "home/app/target/newsletter_app-0.0.1-SNAPSHOT.jar" "newsletter.jar"
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","newsletter.jar"]

@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  newsletter-mysql:   
+    image: newsletter_mysql 
+    ports:
+      - 3306:3306  
+    environment:
+      - MYSQL_ROOT_PASSWORD=root      
+      - MYSQL_DATABASE=newsletter     
+      - MYSQL_PASSWORD=root     
+      
+    networks:
+      - newsletter-network
+      
+  newsletter-backend:
+    image: newsletter_backend 
+    networks:
+      - newsletter-network
+    restart: on-failure
+    depends_on:
+      - newsletter-mysql  
+    ports:
+      - 8080:8080  
+    environment:
+      - DATABASE_HOST=newsletter-mysql
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=newsletter
+      - DATABASE_PORT=3306
+    volumes:
+      - /uploads 
+  newsletter-front:
+    image: newsletter_frontend
+    networks:
+      - newsletter-network
+    restart: on-failure
+    depends_on:
+      - newsletter-backend   
+    ports:
+      - 3000:3000
+      
+    command: npm start
+    stdin_open: true     
+
+networks:
+  newsletter-network: 
