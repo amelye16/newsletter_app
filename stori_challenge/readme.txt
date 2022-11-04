@@ -48,7 +48,16 @@ Go back to project folder:
 $ cd ../..
 
 $ cd frontend/newsletter_app
-docker build -t newsletter_frontend .
+
+(On Mac and Linux) You need to have permissions to perform next action, to make sure it doesn't fail please run next line:
+$ chmod 755 * -fR
+
+$ docker build -t newsletter_frontend .
+
+2) Once images are created navigate to project folder:
+
+2.1) Go back to project folder:
+$ cd ../..
 
 2) Once images are created navigate to project folder:
 
